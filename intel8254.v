@@ -19,7 +19,7 @@ module intel8254(
 wire [3:0] enable; // enable[0] for counter 0 , enable[1] for counter 1, enable[2] for counter 2, and enable[3] for control
 
 //Instantiate read write module
-RW RW(CS, A0, A1, enable,);
+RW RW(CS, A0, A1, enable);
 
 //TODO: Instantiate 3 counters
 

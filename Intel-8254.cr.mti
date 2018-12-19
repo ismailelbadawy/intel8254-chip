@@ -1,9 +1,17 @@
-{C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/read-write.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/read-write.v}
+{C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/read_write_tb.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/read_write_tb.v}
 Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
 -- Compiling module RW
+-- Compiling module rw_tb
 
 Top level modules:
-	RW
+	rw_tb
+
+} {} {}} {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/intel8254.v} {1 {vlog -work work -stats=none {C:\Users\Ismail\Documents\Gam3a\Senior 1\Logic 2\logic2-8254\intel8254.v}
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module intel8254
+
+Top level modules:
+	intel8254
 
 } {} {}} {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v}
 Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
