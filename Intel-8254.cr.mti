@@ -1,8 +1,22 @@
-{C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v}
+{C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/read-write.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/read-write.v}
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module RW
+
+Top level modules:
+	RW
+
+} {} {}} {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v}
 Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
 -- Compiling module counter
 
 Top level modules:
 	counter
+
+} {} {}} {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/control.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/control.v}
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module CWR
+
+Top level modules:
+	CWR
 
 } {} {}}
