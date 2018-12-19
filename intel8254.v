@@ -13,7 +13,7 @@ module intel8254(
     input A1,
     input RD,
     input CS, //Remember this is CS bar.
-    input WR, //Remember this is also WR bar.
+    input WR //Remember this is also WR bar.
 );
 
 //TODO: Instantiate read write module

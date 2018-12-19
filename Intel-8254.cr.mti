@@ -1,0 +1,8 @@
+{C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v} {1 {vlog -work work -stats=none {C:/Users/Ismail/Documents/Gam3a/Senior 1/Logic 2/logic2-8254/counter.v}
+Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+-- Compiling module counter
+
+Top level modules:
+	counter
+
+} {} {}}
