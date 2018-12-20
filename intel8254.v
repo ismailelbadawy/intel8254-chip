@@ -17,14 +17,19 @@ module intel8254(
 );
 
 wire [3:0] enable; // enable[0] for counter 0 , enable[1] for counter 1, enable[2] for counter 2, and enable[3] for control
+wire [5:0] control0_old, control0, control1_old, control1, control2_old, control2;
 
 //Instantiate read write module
 RW RW(CS, A0, A1, enable);
 
 //TODO: Instantiate 3 counters
 
-//TODO: Instantiate Control Register.
+// Assign the control word register old values to the new values.
+assign control0_old = control0;
+assign control1_old = control1;
+assign control2_old = control2;
 
-// Pass wires to the counters and to the control register to affect counters.
+//TODO: Instantiate Control Register.
+ControlRegister CWR(data, enable[2], control0_old, control1_old, control2_old, control0, control1, control25);
 
 endmodule
