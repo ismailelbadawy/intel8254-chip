@@ -4,37 +4,31 @@ input clk,		 //Clock pulse
 input reg gate1,		 //Gate
 input wire cs,		 //Chip select
 input reg newCount1,	 //If an update happened
-output reg out1	 //Output wire
+output reg out1,	 //Output wire
+output reg[15:0] currentCount
 );
-
-reg [15:0] originalCount;
-reg [15:0] currentCount;
-reg nextGate;
 reg countdown;
 
-always@(posedge clk) begin
-end
-
-always @(gate1,nextGate,newCount1,posedge clk)begin 
-out1<=0;
-originalCount<=16'b0;
-countdown<=0;
-currentCount<=originalCount;
+always @(posedge clk,negedge cs)begin 
 if (!cs) begin
 out1<=1'b0;
-originalCount<=16'b0;
+currentCount<=16'b0000000000000000;
+countdown<=1'b0;
 end
 else begin
-
+out1<=1'b1;
 if (gate1)begin
-countdown<=1;
-currentCount=originalCount;
+countdown<=1'b1;
+currentCount<=count1;
 end
 else if (countdown)
+out1<=1'b0;
 currentCount<=currentCount-1;
 end	
-if (currentCount==16'b0)
-out1<=1;
+if (currentCount==0) begin
+out1<=1'b1;
+countdown<=1'b0;
+end
 end
 endmodule
 
