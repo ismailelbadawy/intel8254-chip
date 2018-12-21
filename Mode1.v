@@ -58,6 +58,7 @@ if(currentState==2'b01)begin
 				currentState<=2'b00;
 			end
 			else begin 
+				out1=0;
 				currentCount=currentCount-1;
 				currentState<=2'b01;
 			end		
