@@ -4,14 +4,18 @@ input wire[5:0] controlWord,    //7etet badawy
 input wire gate,			//A Gate .... 
 input reg [7:0] countIn,   	//8 bits LSB + 8bits of MSB
 input wire dataEn,		//Enable to read the data
-output reg out			
+output reg out
 );
 
-reg [15:0]currentCount;	  // Incase we are using mode 1 or mode 2 where the count must be pipelined
-reg [15:0]activeCount;    // Since it will updated after the gate pulse by one clock cycle
 
+// Incase we are using mode 1 or mode 2 where the count must be pipelined
+reg[15:0] activeCount;
+reg[15:0] currentCount;
 
+reg mode0countDone=0;
+reg mode1countDone=0;
 reg[1:0] mode;
+
 reg [1:0] currentState=2'b00;
 reg [1:0] nextState=2'b00;
 
@@ -31,20 +35,33 @@ reg gateFlag2=0;       //
 
 always @(controlWord) begin
 
+mode0countDone=0;
+mode1countDone=0;
+newCount=0;
+newCountFlag=0;
+lmFlag=0;
+counting=0;
+gateFlag1=0;
+gateFlag2=0;
 LM<=controlWord[5:4];
 mode<=controlWord[2:1];
 
 end //EOA
 
 
+always@(gate) begin
+if (gate&&currentState==2) begin	//gate pulse occured
+	gateFlag1=1;			//Will set variable to check after the next clk cycle
+end
 
-always@(posedge clk) begin
+end //EOA
+
+
+always@(negedge clk) begin
 
 currentState <=nextState;
 
-if (currentState==0) out=1'bz;                              //Floating
-
-if (newCount==1) begin					    //If a new count came we set the flag to check in the next clk pulse
+if (newCount==1&&currentState!=2) begin					    //If a new count came we set the flag to check in the next clk pulse
 	newCountFlag=1;
 	newCount=0;
 end
@@ -54,16 +71,98 @@ else if (newCountFlag==1)begin
 	counting=1;
 end
 
-if (gate&&mode==1) begin		//gate pulse occured
-	gateFlag1=1;			//Will set variable to check after the next clk cycle
-end
-
-else if (gate&&mode==2) begin		//Same as above lines
-	gateFlag1=1;
-end
-
 else if(gateFlag1==1) begin		
-	gateFlag2=1;
+	gateFlag2<=1;
+	gateFlag1<=0;
+end
+
+else if(gateFlag2==1&&currentState==2'b10) begin
+	activeCount=currentCount+1;
+	counting=1;
+	gateFlag2=0;
+end
+
+if (currentState==1) begin    //mode 0
+	if (counting==0) begin
+		if(mode0countDone==1)begin
+			out<=1;
+			mode0countDone<=1;		
+		end
+
+		else	out<=0;
+	end
+	
+	else begin
+		
+		if (gate==1 && activeCount!=0)begin
+			out=0;
+			activeCount<=activeCount-1;
+			counting=1;
+		end
+
+
+		if (activeCount==1)begin
+		out=1;
+		counting=0;
+		mode0countDone<=1;
+		end
+
+	end 
+
+nextState<=1;
+
+end
+
+else if (currentState==2) begin		//mode 1
+
+	if (counting==0) begin
+		if (mode1countDone==1) begin
+			mode1countDone<=1;
+			out=1;
+		end
+		else out<=0;
+	end
+
+	else begin
+		if (activeCount!=0) begin
+			out=0;
+			activeCount<=activeCount-1;
+			counting=1;
+		end
+		
+		if (activeCount==1) begin
+			out=1;
+			counting=0;
+			mode1countDone=1;
+		end
+	end
+
+nextState<=2;
+
+end
+
+else if (currentState==3) begin
+
+	if (counting==0) begin
+		out=1'b1;
+	end
+
+	else begin
+
+		if (gate==1&&activeCount!=1) begin
+			out=1;
+			activeCount=activeCount-1;
+			counting=1;
+		end 
+		if (gate==1&&activeCount==1) begin
+			out=0;
+			activeCount=currentCount;		
+		end
+		else if (gate==0)
+			out=0;
+	end
+nextState=3;
+
 end
 
 
@@ -85,13 +184,9 @@ end //EOA
 always @(newCountFlag) begin
 
 if (newCountFlag==1) begin
-	if (mode==0) begin
-		activeCount<=currentCount;
-	end
-
-	if (mode==1||mode==2) begin	
-		if (gateFlag2)
-			activeCount<=currentCount;
+	if (mode==0||mode==2) begin
+		activeCount=currentCount;
+		counting=1;
 	end
 
 end
@@ -140,77 +235,5 @@ else  begin
 end
 
 end//EOA
-
-always@(currentState) begin
-
-if (currentState==0) nextState<=0; //idle and no changes yet
-
-else if (currentState==1) begin    //mode 0
-	if (counting==0) begin
-		out=0;
-	end
-	
-	else begin
-		
-		if (gate==1 && activeCount!=0)begin
-			out<=0;
-			activeCount<=activeCount-1;
-		end
-
-
-		if (activeCount==0)begin
-		out<=1;
-		counting=0;
-		end
-
-	end 
-
-nextState<=1;
-
-end
-
-else if (currentState==2) begin		//mode 1
-
-	if (counting==0) begin
-		out<=1;
-	end
-
-	else begin
-		if (activeCount!=0) begin
-			out<=0;
-			activeCount<=activeCount-1;
-		end
-		
-		if (activeCount==0) begin
-			out<=1;
-			counting=0;
-		end
-	end
-
-nextState<=2;
-
-end
-
-else if (currentState==3) begin
-
-	if (counting==0) begin
-		out<=1'b1;
-	end
-
-	else begin
-
-		if (activeCount!=1) begin
-			out<=1;
-			activeCount<=activeCount-1;
-		end 
-		if (activeCount==1) begin
-			out<=0;
-			activeCount<=currentCount;		end
-	end
-nextState<=3;
-
-end
-
-end //EOA
 
 endmodule 
