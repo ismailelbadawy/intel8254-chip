@@ -4,11 +4,12 @@ input wire[5:0] controlWord,    //7etet badawy
 input wire gate,			//A Gate .... 
 input reg [7:0] countIn,   	//8 bits LSB + 8bits of MSB
 input wire dataEn,		//Enable to read the data
-output reg out
+output reg out,
 );
 
 
 // Incase we are using mode 1 or mode 2 where the count must be pipelined
+
 reg[15:0] activeCount;
 reg[15:0] currentCount;
 

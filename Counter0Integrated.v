@@ -9,6 +9,7 @@ output reg out
 
 
 // Incase we are using mode 1 or mode 2 where the count must be pipelined
+
 reg[15:0] activeCount;
 reg[15:0] currentCount;
 
