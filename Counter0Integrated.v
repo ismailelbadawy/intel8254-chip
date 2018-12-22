@@ -1,15 +1,17 @@
 module countInt(
 input wire clk,
 input wire[5:0] controlWord,    //7etet badawy
-input wire gate			//A Gate .... 
+input wire gate,			//A Gate .... 
 input reg [7:0] countIn,   	//8 bits LSB + 8bits of MSB
-input wire dateEn		//Enable to read the data
-output reg out
+input wire dataEn,		//Enable to read the data
+output reg out			
 );
+
 reg [15:0]currentCount;	  // Incase we are using mode 1 or mode 2 where the count must be pipelined
 reg [15:0]activeCount;    // Since it will updated after the gate pulse by one clock cycle
 
-wire[1:0] mode;
+
+reg[1:0] mode;
 reg [1:0] currentState=2'b00;
 reg [1:0] nextState=2'b00;
 
@@ -25,12 +27,12 @@ reg counting=0;        //Counting or finished counting
 reg gateFlag1=0;       //For handling mode 1 and mode 2
 reg gateFlag2=0;       //
 
-// Bits 5,4===> Data in form , Bits 3,2,1 Mode (Bit 3 is redundant since we will use only 3 modes)  Bit 0 is redundant since we will always used Binary mode
+// Bits 5,4===> Data in form, Bits 3,2,1 Mode (Bit 3 is redundant since we will use only 3 modes)  Bit 0 is redundant since we will always used Binary mode
 
 always @(controlWord) begin
 
-LM=controlWord[5:4];
-mode=controlWord[2:1];
+LM<=controlWord[5:4];
+mode<=controlWord[2:1];
 
 end //EOA
 
@@ -99,23 +101,26 @@ newCountFlag<=0;
 end //EOA
 
 
-always@(posedge dataEn)begin
+always @(dataEn)begin
 
-if (LM==1) begin 
-	currentCount[15:8]<=8'b00000000;
-	currentCount[7:0]<= countIn;
-	newCount<=1;
-end
+if (dataEn==1) begin
+	if (LM==1) begin 
+		currentCount[15:8]<=8'b00000000;
+		currentCount[7:0]<= countIn;
+		newCount<=1;
+	end
 
-else if (LM==2) begin 
-	currentCount[15:8]<= countIn;
-	currentCount[7:0]<=8'b00000000;
-	newCount<=1;
-end
+	else if (LM==2) begin 
+		currentCount[15:8]<= countIn;
+		currentCount[7:0]<=8'b00000000;
+		newCount<=1;
+	end
 
-else if (LM==3&&lmFlag==0) begin
-	lmFlag=1;
-	currentCount[7:0]<=countIn;
+	else if (LM==3&&lmFlag==0) begin
+		lmFlag=1;
+		currentCount[7:0]<=countIn;
+	end
+
 end
 
 end//EOA
@@ -201,8 +206,11 @@ else if (currentState==3) begin
 		if (activeCount==1) begin
 			out<=0;
 			activeCount<=currentCount;		end
+	end
 nextState<=3;
 
 end
 
 end //EOA
+
+endmodule 
