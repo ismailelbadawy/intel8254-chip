@@ -65,7 +65,14 @@ module intel8254_tb();
       A0 = 1;
       A1 = 0;
       data = 5;
-      
+      #5
+      gate2 = 0;
+      #20
+      A0 = 0;
+      A1 = 1;
+      data = 12;
+      #5
+      gate2 = 1;
     end
 
     always begin

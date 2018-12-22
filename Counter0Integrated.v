@@ -61,7 +61,7 @@ end //EOA
 
 always@(negedge clk) begin
 
-currentState <=nextState;
+currentState =nextState;
 
 if (newCount==1&&currentState!=2) begin					    //If a new count came we set the flag to check in the next clk pulse
 	newCountFlag=1;
@@ -111,7 +111,7 @@ if (currentState==1) begin    //mode 0
 
 	end 
 
-nextState<=1;
+nextState = 1;
 
 end
 
@@ -139,11 +139,11 @@ else if (currentState == 2) begin		//mode 1
 		end
 	end
 
-nextState<=2;
+nextState = 2;
 
 end
 
-else if (currentState==3) begin
+else if (currentState==3) begin //mode 2
 
 	if (counting==0) begin
 		out=1'b1;
@@ -151,12 +151,12 @@ else if (currentState==3) begin
 
 	else begin
 
-		if (gate==1&&activeCount!=1) begin
+		if (gate==1 && activeCount!= 0) begin
 			out=1;
 			activeCount=activeCount-1;
 			counting=1;
 		end 
-		if (gate==1&&activeCount==1) begin
+		if (gate==1 && activeCount==0) begin
 			out=0;
 			activeCount=currentCount;		
 		end
@@ -175,7 +175,7 @@ end//EOA
 always @(countIn) begin
 
 if (lmFlag==1) begin
-	currentCount[15:8]<=countIn;
+	currentCount[15:8]=countIn;
 	lmFlag=0;
 	newCount=1;
 end
@@ -198,26 +198,25 @@ newCountFlag<=0;
 end //EOA
 
 
-always @(dataEn)begin
+always @(dataEn, countIn)begin
 
 if (dataEn==1) begin
 	if (LM==1) begin 
-		currentCount[15:8]<=8'b00000000;
-		currentCount[7:0]<= countIn;
-		newCount<=1;
+		currentCount[15:8] = 8'b00000000;
+		currentCount[7:0] = countIn;
+		newCount = 1;
 	end
 
 	else if (LM==2) begin 
-		currentCount[15:8]<= countIn;
-		currentCount[7:0]<=8'b00000000;
+		currentCount[15:8]= countIn;
+		currentCount[7:0]=8'b00000000;
 		newCount<=1;
 	end
 
 	else if (LM==3&&lmFlag==0) begin
 		lmFlag=1;
-		currentCount[7:0]<=countIn;
+		currentCount[7:0]=countIn;
 	end
-
 end
 
 end//EOA
@@ -225,15 +224,15 @@ end//EOA
 always@(mode) begin	//Assuming mode will have a range of {0,1,2}
 
 if (mode==0) begin
-	nextState<=1;	//mode0
+	nextState = 1;	//mode0
 end
 
 else if (mode==1) begin
-	nextState<=2;	//mode1
+	nextState = 2;	//mode1
 end
 
 else  begin
-	nextState<=3;	//mode2
+	nextState = 3;	//mode2
 end
 
 end//EOA
