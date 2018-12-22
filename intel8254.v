@@ -23,7 +23,7 @@ wire [5:0] control0_old, control0, control1_old, control1, control2_old, control
 RW RW(CS, A0, A1, enable);
 
 // Instantiate Control Register.
-ControlRegister CW(data, enable[3], control0_old, control1_old, control2_old, control0, control1, control25);
+ControlRegister CW(data, enable[3], control0_old, control1_old, control2_old, control0, control1, control2);
 
 
 // Instantiate 3 counters

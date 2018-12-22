@@ -36,17 +36,18 @@ reg gateFlag2=0;       //
 
 always @(controlWord) begin
 
-mode0countDone=0;
-mode1countDone=0;
-newCount=0;
-newCountFlag=0;
-lmFlag=0;
-counting=0;
-gateFlag1=0;
-gateFlag2=0;
-LM<=controlWord[5:4];
-mode<=controlWord[2:1];
-
+	mode0countDone=0;
+	mode1countDone=0;
+	newCount=0;
+	newCountFlag=0;
+	lmFlag=0;
+	counting=0;
+	gateFlag1=0;
+	gateFlag2=0;
+	currentState = 0;
+	nextState = 0;
+	LM = controlWord[5:4];
+	mode = controlWord[2:1];
 end //EOA
 
 
@@ -86,8 +87,8 @@ end
 if (currentState==1) begin    //mode 0
 	if (counting==0) begin
 		if(mode0countDone==1)begin
-			out<=1;
-			mode0countDone<=1;		
+			out = 1;
+			mode0countDone = 1;		
 		end
 
 		else	out<=0;
@@ -96,16 +97,16 @@ if (currentState==1) begin    //mode 0
 	else begin
 		
 		if (gate==1 && activeCount!=0)begin
-			out=0;
-			activeCount<=activeCount-1;
+			out = 0;
+			activeCount = activeCount-1;
 			counting=1;
 		end
 
 
-		if (activeCount==1)begin
-		out=1;
-		counting=0;
-		mode0countDone<=1;
+		if (activeCount==0)begin
+		out = 1;
+		counting = 0;
+		mode0countDone = 1;
 		end
 
 	end 
@@ -114,25 +115,25 @@ nextState<=1;
 
 end
 
-else if (currentState==2) begin		//mode 1
+else if (currentState == 2) begin		//mode 1
 
-	if (counting==0) begin
+	if (counting == 0) begin
 		if (mode1countDone==1) begin
 			mode1countDone<=1;
 			out=1;
 		end
-		else out<=0;
+		else out = 0;
 	end
 
 	else begin
-		if (activeCount!=0) begin
+		if (activeCount != 0) begin
 			out=0;
-			activeCount<=activeCount-1;
+			activeCount = activeCount-1;
 			counting=1;
 		end
 		
-		if (activeCount==1) begin
-			out=1;
+		if (activeCount == 0) begin
+			out = 1;
 			counting=0;
 			mode1countDone=1;
 		end

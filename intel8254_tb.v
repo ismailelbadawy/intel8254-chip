@@ -25,12 +25,46 @@ module intel8254_tb();
       CS = 0;
       A0 = 1;
       A1 = 1;
+      #5
+      data = 8'b01010010;
+      #5
+      data = 8'b10010100;
       #10
       gate0 = 1;
       data = 5;
       // Address data to counter 0;
       A0 = 0;
       A1 = 0;
+      #5 
+      A0 = 1;
+      A1 = 0;
+      gate2 = 1;
+      data = 10;
+      #5
+      A0 = 0;
+      A1 = 1;
+      data = 4;
+      #5
+      gate1 = 1;
+      #5
+      gate1 = 0;
+      #10
+      A0 = 1;
+      A1 = 1;
+      data = 8'b00010010;
+      #5
+      gate0 = 0;
+      A0 = 0;
+      A1 = 0;
+      data = 10;
+      #10
+      gate0 = 1;
+      #5
+      gate0 = 0;
+      #5
+      A0 = 1;
+      A1 = 0;
+      data = 5;
       
     end
 
